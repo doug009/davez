@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 300px;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>DA VEZ</h1>
+  <table>
+    <tr>
+      <th></th>
+      <th>NOME</th>
+      <th>STATUS</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+<br>
+
+  <button id="addButton">ENTRAR NA FILA</button>
+  <button id="atendimentoButton">EM ATENDIMENTO</button>
+<br>
+<br>
+  <button id="removeButton">SAIR DA FILA</button>
+  <button id="voltarButton">VOLTAR A FILA</button>
+
+  <script>
+    const fila = [];
+
+    document.getElementById("addButton").addEventListener("click", function () {
+      const nome = prompt("DIGITE SUA INICIAL:");
+      if (nome) {
+        fila.push({ nome, status: "AGUARDANDO" });
+        atualizarTabela();
+      }
+    });
+
+    document.getElementById("removeButton").addEventListener("click", function () {
+      const nome = prompt("QUEM IRA SAIR?:");
+      if (nome) {
+        const index = fila.findIndex(item => item.nome === nome);
+        if (index !== -1) {
+          fila.splice(index, 1);
+          atualizarTabela();
+        }
+      }
+    });
+
+    document.getElementById("atendimentoButton").addEventListener("click", function () {
+      const nome = prompt("QUEM ESTA EM ATENDIMENTO:");
+      if (nome) {
+        const index = fila.findIndex(item => item.nome === nome);
+        if (index !== -1) {
+          fila[index].status = "EM ATENDIMENTO";
+          atualizarTabela();
+        }
+      }
+    });
+
+    document.getElementById("voltarButton").addEventListener("click", function () {
+      const nome = prompt("QUEM VAI VOLTAR A FILA?:");
+      if (nome) {
+        const index = fila.findIndex(item => item.nome === nome);
+        if (index !== -1 && fila[index].status === "EM ATENDIMENTO") {
+          fila.splice(index, 1);
+          fila.push({ nome, status: "AGUARDANDO" });
+          atualizarTabela();
+        }
+      }
+    });
+
+    function atualizarTabela() {
+      const table = document.querySelector("table");
+      const rows = table.getElementsByTagName("tr");
+
+      for (let i = 1; i < rows.length; i++) {
+        const nomeCell = rows[i].getElementsByTagName("td")[1];
+        const statusCell = rows[i].getElementsByTagName("td")[2];
+
+        if (i - 1 < fila.length) {
+          nomeCell.textContent = fila[i - 1].nome;
+          statusCell.textContent = fila[i - 1].status;
+        } else {
+          nomeCell.textContent = "";
+          statusCell.textContent = "";
+        }
+      }
+    }
+  </script>
+</body>
+</html>
+
+
